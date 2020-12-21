@@ -52,7 +52,10 @@ class _SignInScreenState extends State<SignInScreen> implements SignInContract {
                         password = value;
                       }),
                   SizedBox(height: 20),
-                  getSignInButtonWidget(context)
+                  getSignInButtonWidget(context),
+                  FlatButton(onPressed: (){
+                    Navigator.of(context).pushReplacementNamed(SIGN_UP);
+                  }, child: Text("Don't have account? Sign Up", style: subTitleWhiteTextStyle,))
                 ]),
           ],
         ),
@@ -143,6 +146,7 @@ class _SignInScreenState extends State<SignInScreen> implements SignInContract {
     });
     AppUtils.showToast(signedInUser.message);
     saveUserToSharedPreferences(signedInUser);
+    Navigator.of(context).pushNamed(HOME);
   }
 
   saveUserToSharedPreferences(SignInResponse user){

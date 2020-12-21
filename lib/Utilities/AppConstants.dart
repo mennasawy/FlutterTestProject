@@ -6,7 +6,9 @@ const Color Transparent = Colors.transparent;
 const Color White = Colors.white;
 const Color Off_White = Colors.white30;
 const Color Black = Colors.black;
+const Color Grey = Colors.grey;
 Color Dark_Grey = Colors.grey[800];
+const Color RED = Colors.red;
 
 const TEXTFIELD_BORDER_RADUIS = 20.0;
 const BUTTON_BORDER_RADUIS = 25.0;
@@ -16,7 +18,10 @@ const String SIGN_IN = "/";
 const String SIGN_UP = "/Sign_Up";
 const String ALL_PRODUCTS = "All_Products";
 const String HOME = "Home";
+const String SHOPPING_CART = "Shopping_Cart";
 
 //Text styles
 TextStyle basicWhiteTextStyle = TextStyle(color: White, fontSize: 18);
-TextStyle geryTextStyle = TextStyle(color: Dark_Grey, fontSize: 16);
+TextStyle subTitleWhiteTextStyle = TextStyle(color: White, fontSize: 13);
+TextStyle titleTextStyle = TextStyle(fontSize: 18);
+TextStyle greyTextStyle = TextStyle(color: Grey, fontSize: 14);

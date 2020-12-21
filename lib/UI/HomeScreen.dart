@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test_project/Utilities/AppConstants.dart';
 import 'package:flutter_test_project/Utilities/AppUtils.dart';
+import 'package:flutter_test_project/Utilities/WidgetUtils/AppBarWidget.dart';
 import 'package:flutter_test_project/Utilities/WidgetUtils/AppDrawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,11 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Home"),
-          backgroundColor: Main_Purple,
-          actions: [Icon(Icons.shopping_cart), SizedBox(width: 10)],
-        ),
+        appBar: AppBarWidget(title: "Home",),
         drawer: AppDrawerWidget(),
         body: Center(
           child: Row(
@@ -29,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }),
               SizedBox(width: AppUtils.getScreenWidth(context) * 0.1),
               getItemCardWidget("Shopping Cart", () {
-                Navigator.pushNamed(context, ALL_PRODUCTS);
+                Navigator.of(context).pushNamed(SHOPPING_CART);
               })
             ],
           ),

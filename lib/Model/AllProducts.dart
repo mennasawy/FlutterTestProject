@@ -87,6 +87,7 @@ class Product {
         this.price,
         this.photo,
         this.noOfItems,
+        this.cartAllProductsCount,
     });
 
     int id;
@@ -94,7 +95,8 @@ class Product {
     String mainImg;
     String price;
     String photo;
-    int noOfItems;
+    int noOfItems = 0;
+    int cartAllProductsCount;
 
     factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],

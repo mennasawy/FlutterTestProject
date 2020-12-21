@@ -15,6 +15,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> implements SignUpContract {
   bool isSigningUp = false;
+  bool isArabicNameFieldRTL;
   SignUpPresenter _signUpPresenter;
   var selectedDate = new HijriCalendar.now();
   String userEnglishName, userArabicName, hijriBirthDate, mobile, password;
@@ -44,6 +45,9 @@ class _SignUpScreenState extends State<SignUpScreen> implements SignUpContract {
                         onValueChanged: (value) {
                           userArabicName = value;
                         },
+                        isTextRTL: (isArabic) {
+                          isArabicNameFieldRTL = isArabic;
+                        },
                       ),
                       getSeparatorWidget(context),
                       TextFieldWidget(
@@ -67,7 +71,15 @@ class _SignUpScreenState extends State<SignUpScreen> implements SignUpContract {
                         },
                       ),
                       SizedBox(height: 20),
-                      getSignUpButtonWidget(context)
+                      getSignUpButtonWidget(context),
+                      FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pushReplacementNamed(SIGN_IN);
+                          },
+                          child: Text(
+                            "Back To Sign In",
+                            style: subTitleWhiteTextStyle,
+                          ))
                     ]),
               ),
             ),
@@ -118,22 +130,37 @@ class _SignUpScreenState extends State<SignUpScreen> implements SignUpContract {
 
   //TODO: Handle sign in action
   onSignUpPressed() {
-    // if (AppUtils.isNotEmptyText(userEnglishName)) {
-    //   if (AppUtils.isArabicText(userArabicName ?? "")) {
-        SignUpRequest signUpRequestBody = SignUpRequest(
-            nameEn: userEnglishName,
-            nameAr: userArabicName,
-            birthdate: hijriBirthDate,
-            mobile: mobile,
-            password: password);
-        _signUpPresenter = SignUpPresenter(this);
-        _signUpPresenter.userSignUp(signUpRequestBody, context);
-        setState(() {
-          isSigningUp = true;
-        });
-    //   } else
-    //     AppUtils.showToast("Arabic User Name Must Be In Arabic Letters");
-    // } else AppUtils.showToast("Name is required");
+    List<String> signUpFields = [
+      userEnglishName,
+      userArabicName,
+      hijriBirthDate,
+      mobile,
+      password
+    ];
+    bool areFieldsFilled = true;
+    signUpFields.forEach((field) {
+      if (!AppUtils.isNotEmptyText(field)) areFieldsFilled = false;
+    });
+    if (areFieldsFilled) {
+      if (isArabicNameFieldRTL) {
+        if (AppUtils.isValidPhoneNumber(mobile)) {
+          SignUpRequest signUpRequestBody = SignUpRequest(
+              nameEn: userEnglishName,
+              nameAr: userArabicName,
+              birthdate: hijriBirthDate,
+              mobile: mobile,
+              password: password);
+          _signUpPresenter = SignUpPresenter(this);
+          _signUpPresenter.userSignUp(signUpRequestBody, context);
+          setState(() {
+            isSigningUp = true;
+          });
+        } else
+          AppUtils.showToast("Not valid mobile number");
+      } else
+        AppUtils.showToast("Arabic User Name Must Be In Arabic Letters");
+    } else
+      AppUtils.showToast("All fields are required");
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -164,6 +191,7 @@ class _SignUpScreenState extends State<SignUpScreen> implements SignUpContract {
     setState(() {
       isSigningUp = false;
     });
+    AppUtils.showToast(error.message);
   }
 
   @override
@@ -173,5 +201,7 @@ class _SignUpScreenState extends State<SignUpScreen> implements SignUpContract {
     setState(() {
       isSigningUp = false;
     });
+    AppUtils.showToast(signedInUser.message);
+    Navigator.of(context).pushNamed(HOME);
   }
 }
