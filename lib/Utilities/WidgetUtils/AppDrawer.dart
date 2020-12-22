@@ -77,7 +77,7 @@ class _AppDrawerWidgetState extends State<AppDrawerWidget> {
           }),
           getSeparatorWidget(context),
           getMenuItem("Shopping Cart", () {
-            Navigator.pushNamed(context, HOME);
+            Navigator.pushNamed(context, SHOPPING_CART);
           }),
           getSeparatorWidget(context),
           getMenuItem("Sign Out", () {

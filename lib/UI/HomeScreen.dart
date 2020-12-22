@@ -18,13 +18,12 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: AppDrawerWidget(),
         body: Center(
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               getItemCardWidget("Products", () {
                 Navigator.pushNamed(context, ALL_PRODUCTS);
               }),
-              SizedBox(width: AppUtils.getScreenWidth(context) * 0.1),
               getItemCardWidget("Shopping Cart", () {
                 Navigator.of(context).pushNamed(SHOPPING_CART);
               })
@@ -36,18 +35,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getItemCardWidget(String title, Function onTap) {
+    Color cardColor = title == "Products"? Main_Purple : Main_Fuscia;
     return GestureDetector(
       child: Container(
-        width: AppUtils.getScreenWidth(context) * 0.4,
-        height: AppUtils.getScreenHeight(context) * 0.25,
+        width: AppUtils.getScreenWidth(context) * 0.45,
+        height: AppUtils.getScreenHeight(context) * 0.35,
         decoration: BoxDecoration(
-            color: Main_Purple,
+            color: cardColor,
             borderRadius: BorderRadius.circular(10),
             border: Border(
-              top: BorderSide(width: 2, color: Main_Purple.withOpacity(0.5)),
-              bottom: BorderSide(width: 2, color: Main_Purple.withOpacity(0.5)),
-              right: BorderSide(width: 2, color: Main_Purple.withOpacity(0.5)),
-              left: BorderSide(width: 2, color: Main_Purple.withOpacity(0.5)),
+              top: BorderSide(width: 2, color: cardColor.withOpacity(0.5)),
+              bottom: BorderSide(width: 2, color: cardColor.withOpacity(0.5)),
+              right: BorderSide(width: 2, color: cardColor.withOpacity(0.5)),
+              left: BorderSide(width: 2, color: cardColor.withOpacity(0.5)),
             )),
         child: Center(
             child: Text(

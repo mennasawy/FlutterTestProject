@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context, value, Widget child) {
             return MaterialApp(
               debugShowCheckedModeBanner: false,
-              theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+              // theme: Styles.themeData(themeChangeProvider.darkTheme, context),
               localizationsDelegates: [
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,

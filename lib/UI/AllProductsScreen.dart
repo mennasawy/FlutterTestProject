@@ -25,6 +25,7 @@ class _AllProductsScreenState extends State<AllProductsScreen>
   List<Product> productsList = [];
   List<Product> shoppingCartProducts = [];
   List<Product> filteredProductsList = [];
+  List<Product> userProductsWithCount = [];
   ScrollController _scrollController = ScrollController();
   AllProductsPresenter _allProductsPresenter;
 
@@ -45,6 +46,7 @@ class _AllProductsScreenState extends State<AllProductsScreen>
   Widget build(BuildContext context) {
     shoppingCartProducts =
         Provider.of<UserCartProductsProvider>(context).cartProductsList;
+    userProductsWithCount = Provider.of<UserCartProductsProvider>(context).cartProductsListWithCount;
     print(
         "No. Of Products ==== ${Provider.of<UserCartProductsProvider>(context).cartProductsList.length}");
     if (!isFirstPageLoaded) loadFirstPage();
@@ -57,7 +59,7 @@ class _AllProductsScreenState extends State<AllProductsScreen>
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: TextFieldWidget(
-                hintText: "Search Items",
+                hintText: "Search Products",
                 onValueChanged: (value){
                   if(AppUtils.isNotEmptyText(value)){
                     filteredProductsList = productsList.where((product) => product.productName.trim().startsWith(value.trim())).toList();
@@ -82,7 +84,7 @@ class _AllProductsScreenState extends State<AllProductsScreen>
   GridView getProductsCardsWidget() {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, childAspectRatio: 0.65),
+          crossAxisCount: 2, childAspectRatio: 0.5),
       controller: _scrollController,
       itemCount: filteredProductsList.length,
       itemBuilder: (context, index) {
@@ -116,8 +118,8 @@ class _AllProductsScreenState extends State<AllProductsScreen>
           ),
           child: Image.network(filteredProductsList[index].photo,
               width: AppUtils.getScreenWidth(context),
-              height: AppUtils.getScreenHeight(context) * 0.23,
-              fit: BoxFit.fill),
+              height: AppUtils.getScreenHeight(context) * 0.37,
+              fit: BoxFit.cover),
         ),
         Text(
           filteredProductsList[index].productName,
@@ -176,6 +178,7 @@ class _AllProductsScreenState extends State<AllProductsScreen>
   }
 
   handleProductRemoveAction(Product product) {
+    userProductsWithCount.firstWhere((element) => element.id == product.id).noOfItems--;
     int index =
         shoppingCartProducts.indexWhere((element) => element.id == product.id);
     setState(() {
@@ -184,6 +187,11 @@ class _AllProductsScreenState extends State<AllProductsScreen>
   }
 
   handleProductAddAction(Product product) {
+    if(productsListContainsProduct(product.id)) userProductsWithCount.firstWhere((element) => element.id == product.id).noOfItems++;
+    else {
+      product.noOfItems = 1;
+      userProductsWithCount.add(product);
+    }
     setState(() {
       shoppingCartProducts.add(product);
     });

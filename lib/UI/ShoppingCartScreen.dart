@@ -19,14 +19,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!isProductsListInitialized) {
-      productsList =
-          Provider.of<UserCartProductsProvider>(context).cartProductsList;
-      productsList.forEach((product) {
-        if (product.noOfItems == null) product.noOfItems = 1;
-      });
-      userProductsWithCount = getEachProductWithCount();
-    }
+    productsList =
+        Provider.of<UserCartProductsProvider>(context).cartProductsList;
+    userProductsWithCount = Provider.of<UserCartProductsProvider>(context)
+        .cartProductsListWithCount;
     return SafeArea(
       child: Scaffold(
         appBar: AppBarWidget(title: "Shopping Cart"),
@@ -231,7 +227,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     setState(() {
       productsList = [];
       userProductsWithCount = [];
-      Provider.of<UserCartProductsProvider>(context, listen: false).cartProductsList = [];
+      Provider.of<UserCartProductsProvider>(context, listen: false)
+          .cartProductsList = [];
+      Provider.of<UserCartProductsProvider>(context, listen: false)
+          .cartProductsListWithCount = [];
     });
   }
 
@@ -241,21 +240,5 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       totalPrice += int.parse(product.price);
     });
     return totalPrice.toString();
-  }
-
-  List<Product> getEachProductWithCount() {
-    List<Product> products = [];
-    productsList.forEach((product) {
-      if (!productsListContainsProduct(products, product.id)) {
-        products.add(product);
-      } else
-        products
-            .firstWhere((newProduct) => product.id == newProduct.id)
-            .noOfItems++;
-    });
-    setState(() {
-      isProductsListInitialized = true;
-    });
-    return products;
   }
 }
